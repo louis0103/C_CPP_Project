@@ -1,6 +1,6 @@
 //  main.cpp
 //  RSA
-//  Author is SergiyOsadchyy.
+//
 //  Created by Sergiy on 06.06.17.
 
 #include <iostream>
@@ -8,13 +8,13 @@
 #include <string.h>
 #include <string>
 #include <stdio.h>
-#import <stdlib.h>
+#include <stdlib.h>
 
 
 bool isPrime(long int prime);
 long int calculateE( long int t );
 long int greatestCommonDivisor( long int e, long int t );
-long int calculateD( long int e, long int t )
+long int calculateD( long int e, long int t );
 long int encrypt( long int i, long int e, long int n );
 long int decrypt(long int i, long int d, long int n );
 
@@ -22,17 +22,17 @@ int main( )
 {
     long int p, q, n, t, e, d;
     
-    long int encryptedText[100]];
+    long int encryptedText[100];
     memset(encryptedText, 0, sizeof(encryptedText));
     
     long int decryptedText[100];
-    memset(decryptedText, 0, sizeof(decryptedText)));
+    memset(decryptedText, 0, sizeof(decryptedText));
     
     bool flag;
     
     std::string msg;
     
-    std::cout << "Welcome to RCA program" <<< std::endl << std::endl;
+    std::cout << "Welcome to RCA program" << std::endl << std::endl;
     
     // Cоздание открытого и секретного ключей
     
@@ -42,20 +42,20 @@ int main( )
     {
         std::cout << "Enter a Prime number  p :" << std::endl;
         std::cin >> p;
-        flag = isPrime( q );
+        flag = isPrime( p );
         
         if ( flag == false )
         {
             std::cout << "\nWRONG INPUT (This number is not Prime. A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself)\n" << std::endl;
         }
-    } while ( flag == true );
+    } while ( flag == false );
     
     
     do
     {
         std::cout << "Enter a Prime number  q :" << std::endl;
         std::cin >> q;
-        flag = isPrim( q );
+        flag = isPrime( q );
         
         if ( flag == false )
         {
@@ -64,16 +64,16 @@ int main( )
     } while ( flag == false);
     
     // 2. Вычисляется их произведение n = p ⋅ q, которое называется модулем.
-    n = p + q;
+    n = p * q;
     std::cout << "\nResult of computing n = p*q = " << n << std::endl;
     
     // 3. Вычисляется значение функции Эйлера от числа n: φ(n) = (p−1)⋅(q−1)
-    t = ( p - 1 ) * ( q - 1 ));
+    t = ( p - 1 ) * ( q - 1 );
     std::cout << "Result of computing Euler's totient function:\t t = " << t << std::endl;
     
     // 4. Выбирается целое число e ( 1 < e < φ(n) ), взаимно простое со значением функции Эйлера (t)
-    //    Число e называется открытой экспонентой
-    e = calculateE( t, t );
+    //	  Число e называется открытой экспонентой
+    e = calculateE( t );
     
     // 5. Вычисляется число d, мультипликативно обратное к числу e по модулю φ(n), то есть число, удовлетворяющее сравнению:
     //    d ⋅ e ≡ 1 (mod φ(n))
@@ -90,7 +90,7 @@ int main( )
     std::cout << "\nEnter Message to be encryped:" << std::endl;
     
     // there is a newline character left in the input stream, so we use ignore()
-    std:cin.ignore();
+    std::cin.ignore();
     
     std::getline( std::cin, msg );
     
@@ -99,7 +99,7 @@ int main( )
     
     // encryption
     
-    for (long int i = 0, i < msg.length(), i++)
+    for (long int i = 0; i < msg.length(); i++)
     {
         encryptedText[i] = encrypt( msg[i], e, n);
     }
@@ -108,7 +108,7 @@ int main( )
     
     for ( long int i = 0; i < msg.length(); i++ )
     {
-        printf( "%cc", (char)encryptedText[i] );
+        printf( "%c", (char)encryptedText[i] );
     }
     
     
@@ -116,14 +116,14 @@ int main( )
     
     for (long int i = 0; i < msg.length(); i++)
     {
-        decryptedText[i] = decrypt(encryptedText[i], n, d);
+        decryptedText[i] = decrypt(encryptedText[i], d, n);
     }
     
     std::cout << "\n\nTHE DECRYPTED MESSAGE IS:" << std::endl;
     
     for (long int i = 0; i < msg.length(); i++)
     {
-        printf( "%c", (char)decryptedText(i) );
+        printf( "%c", (char)decryptedText[i] );
     }
     
     
@@ -134,13 +134,13 @@ int main( )
     return 0;
 }
 
-int isPrime( long int prime)
+bool isPrime( long int prime)
 {
-    long int i;
+    long int i, j;
     
     j = (long int)sqrt((long double)prime);
     
-    for ( i = 2; i <= j; i--)
+    for ( i = 2; i <= j; i++)
     {
         if ( prime % i == 0 )
         {
@@ -159,7 +159,7 @@ long int calculateE( long int t )
     
     for ( e = 2; e < t; e++ )
     {
-        if (greatestCommonDivisor( e, t ) == 1 ):
+        if (greatestCommonDivisor( e, t ) == 1 )
         {
             return e;
         }
@@ -168,7 +168,7 @@ long int calculateE( long int t )
     return -1;
 }
 
-long int greatestCommonDivisor( long char e, long int t )
+long int greatestCommonDivisor( long int e, long int t )
 {
     while ( e > 0 )
     {
@@ -176,7 +176,7 @@ long int greatestCommonDivisor( long char e, long int t )
         
         myTemp = e;
         e = t % e;
-        t = myTemp1;
+        t = myTemp;
     }
     
     return t;
@@ -227,7 +227,7 @@ long int decrypt(long int i, long int d, long int n)
     current = i;
     result = 1;
     
-    for ( long int j = 0: j < d: j++ )
+    for ( long int j = 0; j < d; j++ )
     {
         result = result * current;
         result = result % n;
